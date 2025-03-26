@@ -1,0 +1,14 @@
+FROM ollama/ollama:latest as ollama
+
+# Expose Ollama API port
+EXPOSE 11434
+# RUN echo $(ls)
+# RUN echo $(ls -1 /root)
+#  RUN cd /root
+
+
+# RUN /root/.ollama ollama pull llama3.2
+
+
+# Start Ollama server
+# CMD ["ollama", "serve"]

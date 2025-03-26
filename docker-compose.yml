@@ -1,0 +1,45 @@
+# Use Docker Compose to link everything together
+# docker-compose.yml
+# version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"
+    networks:
+      - common
+
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "80:80"
+    networks:
+      - common
+
+  ollama:
+    container_name: ollama
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    ports:
+      - "0.0.0.0:11434:11434"
+    volumes:
+     - ./ollama:/root/.ollama
+    networks:
+      - common
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  common:
+    # Specify driver options
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"

@@ -1,0 +1,24 @@
+# # Use a Node image for the frontend
+FROM node:20 AS frontend
+
+# # Set the working directory
+WORKDIR /frontend
+
+# # Install frontend dependencies
+COPY webapp/package.json webapp/yarn.lock ./
+RUN yarn install
+
+# # Copy frontend code
+COPY webapp/ .
+
+# # Build frontend
+RUN yarn build
+
+# Use nginx to serve frontend
+FROM nginx:1.23
+COPY --from=frontend /frontend/build /usr/share/nginx/html
+
+# Expose frontend port
+EXPOSE 80
+
+
